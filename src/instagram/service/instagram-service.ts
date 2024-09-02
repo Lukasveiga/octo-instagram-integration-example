@@ -10,9 +10,8 @@ export class InstagramService {
 
     async saveBusinessAccount(accessToken: string): Promise<void> {
         try {
-            const userInfo = await axios.post(
+            const userInfo = await axios.get(
                 this.BASE_GRAPH_URL + "/me?fields=id",
-                {},
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
@@ -22,9 +21,8 @@ export class InstagramService {
 
             const userId = userInfo.data.id;
 
-            const businessAccountInfo = await axios.post(
+            const businessAccountInfo = await axios.get(
                 this.BASE_GRAPH_URL + `/${userId}?fields=instagram_business_account`,
-                {},
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
