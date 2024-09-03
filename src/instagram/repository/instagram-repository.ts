@@ -1,12 +1,9 @@
 export interface InstagramRepository {
-    getUserInfo(userId: string): Promise<InstagramUserInfo>;
-    saveUserInfo(account: InstagramBusinessAccount): Promise<void>;
+    getUserInfo(userId: string): Promise<UserInstagramInfo>;
+    saveUserInfo(account: UserInstagramInfo): Promise<void>;
 }
 
-export interface InstagramUserInfo {
-    igUserId: string;
-}
-
-export interface InstagramBusinessAccount {
-    id: string
+export interface UserInstagramInfo {
+    userId: string,
+    igUserId: string,
 }

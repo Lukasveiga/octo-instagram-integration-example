@@ -1,4 +1,4 @@
-import { InstagramRepository } from "../repository/instagram-repository";
+import { InstagramRepository, UserInstagramInfo } from "../repository/instagram-repository";
 import axios from "axios";
 
 export class InstagramService {
@@ -19,7 +19,7 @@ export class InstagramService {
                 }
             );
 
-            const userId = userInfo.data.id;
+            const userId = userInfo.data.id as string;
 
             const businessAccountInfo = await axios.get(
                 this.BASE_GRAPH_URL + `/${userId}?fields=instagram_business_account`,
@@ -32,9 +32,13 @@ export class InstagramService {
 
             const businessAccountId = businessAccountInfo.data.instagram_business_account.id;
 
-            await this.instagramRepository.saveUserInfo({id: businessAccountId})
+            await this.instagramRepository.saveUserInfo({
+                userId,
+                igUserId: businessAccountId
+            })
+
         } catch (error) {
-            throw new Error(`Failed to save business account id}`);
+            throw new Error(`Failed to save business account id`);
         }
     }
 
@@ -81,7 +85,10 @@ export class InstagramService {
 
 export interface PublishPostParams {
     userId: string, 
-    imageUrl: string,
+    imageUrl: string, // must be in a public server
     accessToken: string,
     caption: string,
 }
+
+// The access token is generated through Facebook Login
+// and the following permission must be scoped: instagram_content_publish
